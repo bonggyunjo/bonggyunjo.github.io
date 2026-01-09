@@ -9,34 +9,37 @@ theme = 'PaperMod'
 [params]
     env = "production"
     title = "JBG Tech Archive"
-    description = "기록이 쌓이면 실력이 된다. 치열한 고민의 흔적들."
+    description = "끊임없이 성장하는 풀스택 개발자 조봉균입니다."
     author = "Bonggyun Jo"
     
-    # [UI/UX] 참고 사이트의 깔끔한 기능들
-    defaultTheme = "auto"
+    # [디자인 고도화] 라이트 모드 기본 설정
+    defaultTheme = "light"           # 기본 배경을 흰색(라이트)으로 설정
+    disableThemeToggle = false      # 다크/라이트 모드 전환 버튼은 유지
     ShowReadingTime = true
-    ShowShareButtons = false       # 깔끔함을 위해 공유 버튼은 끔
     ShowCodeCopyButtons = true
     ShowBreadCrumbs = true
-    disableSpecial1stPost = true   # 첫 번째 글만 크게 나오는 기능 해제 (깔끔함 유지)
 
-    # [Profile Mode] 참고 사이트의 핵심 디자인
+    # [Profile Mode] 메인 화면: 나를 한 문장으로 정의하기
     [params.profileMode]
         enabled = true
-        title = "Hi there, I'm JBG 👋"
-        subtitle = "시행착오를 통해 얻은 기술적 인사이트와 트러블슈팅 리포트를 기록합니다."
-        imageUrl = "img/profile.jpg" # static/img/profile.jpg 폴더에 사진을 넣으세요
-        imageWidth = 120
-        imageHeight = 120
+        title = "Build, Learn, and Record. 👋"
+        subtitle = """
+        안녕하세요, **풀스택 개발자 조봉균**입니다.  
+        실무에서 마주한 기술적 난제와 해결 과정을 기록하며 동료들과 함께 성장하는 것을 즐깁니다.  
+        현재 에너지 모니터링 시스템 최적화 및 백엔드 고도화에 집중하고 있습니다.
+        """
+        imageUrl = "img/profile.jpg"
+        imageWidth = 140
+        imageHeight = 140
         
         [[params.profileMode.buttons]]
-            name = "Posts"
-            url = "posts"
+            name = "👨‍💻 About Me"       # 자기소개 페이지로 연결
+            url = "about"
         [[params.profileMode.buttons]]
-            name = "Tags"
-            url = "tags"
+            name = "📝 Tech Posts"
+            url = "posts"
 
-    # [Social Icons] 프로필 카드 하단 아이콘
+    # [Social Icons]
     [[params.socialIcons]]
         name = "github"
         url = "https://github.com/bonggyunjo"
@@ -47,7 +50,11 @@ theme = 'PaperMod'
         name = "email"
         url = "mailto:kjbg4565388@gmail.com"
 
-# [Menu] 상단 카테고리 구성 (참고 사이트 스타일)
+# [Menu] 상단 메뉴에 'About' 추가
+[[menu.main]]
+    name = "About"
+    url = "about"
+    weight = 5
 [[menu.main]]
     name = "Backend"
     url = "categories/backend"
