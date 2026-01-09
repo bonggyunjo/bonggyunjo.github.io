@@ -1,6 +1,6 @@
 baseURL = 'https://bonggyunjo.github.io/'
 languageCode = 'ko-kr'
-title = '조봉균의 개발 일지: 문제 해결의 기록' # 더 대중적인 타이틀
+title = 'JBG' # 더 대중적인 타이틀
 theme = 'PaperMod'
 
 [outputs]
@@ -22,9 +22,9 @@ theme = 'PaperMod'
     # [Profile Mode] 범용적인 문제 해결 능력을 강조하는 문구
     [params.profileMode]
         enabled = true
-        title = "Build, Solve, and Record. 🛠️"
+        title = "Build, Solve, and Record."
         subtitle = """
-        "왜 안 되지?"에 대한 답을 찾아가는 과정을 기록합니다. 수많은 기술적 난제와 시행착오를 집요하게 파고들어 해결한 트러블슈팅 리포트를 기록하는 공간입니다. 
+        수많은 기술적 난제와 시행착오를 집요하게 파고들어 해결한 트러블슈팅 리포트를 기록하는 공간입니다. 
         오늘 마주한 에러가 내일의 자산이 되길 바라며, 정답보다는 과정을 기록하는 데 집중하고 있습니다.
         """
         imageUrl = "img/profile.jpg"
