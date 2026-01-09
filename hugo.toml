@@ -1,6 +1,6 @@
 baseURL = 'https://bonggyunjo.github.io/'
 languageCode = 'ko-kr'
-title = 'JBG' # 더 대중적인 타이틀
+title = 'JBG'
 theme = 'PaperMod'
 
 [outputs]
@@ -9,30 +9,27 @@ theme = 'PaperMod'
 [params]
     env = "production"
     title = "조봉균의 개발 일지"
-    description = "안 되는 이유를 찾고, 해결하며 성장하는 과정을 담는 기술 블로그입니다."
+    description = "에러를 해결하며 성장하는 과정을 담는 트러블슈팅 로그입니다."
     author = "Bonggyun Jo"
     
-    # [디자인] 라이트 모드 기반의 깔끔한 가독성
+    # [디자인] 라이트 모드 기반 및 가독성 설정
     defaultTheme = "light"
     disableThemeToggle = false
     ShowReadingTime = true
     ShowCodeCopyButtons = true
     ShowBreadCrumbs = true
 
-    # [Profile Mode] 범용적인 문제 해결 능력을 강조하는 문구
+    # [Profile Mode] 명확하고 간결해진 자기소개
     [params.profileMode]
         enabled = true
         title = "Build, Solve, and Record."
-        subtitle = """
-        수많은 기술적 난제와 시행착오를 집요하게 파고들어 해결한 트러블슈팅 리포트를 기록하는 공간입니다. 
-        오늘 마주한 에러가 내일의 자산이 되길 바라며, 정답보다는 과정을 기록하는 데 집중하고 있습니다.
-        """
+        subtitle = "시행착오 속에서 얻은 해결 과정을 기록합니다. 정답보다는 기술적 고민의 흔적을 담아 내일의 자산으로 만듭니다."
         imageUrl = "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
-        imageWidth = 140
-        imageHeight = 140
+        imageWidth = 120
+        imageHeight = 120
         
         [[params.profileMode.buttons]]
-            name = "🔍 해결 기록 보기"
+            name = "트러블 슈팅"
             url = "posts"
         [[params.profileMode.buttons]]
             name = "👨‍💻 About Me"
@@ -49,7 +46,7 @@ theme = 'PaperMod'
         name = "email"
         url = "mailto:kjbg4565388@gmail.com"
 
-# [Menu]
+# [Menu] 상단 내비게이션
 [[menu.main]]
     name = "About"
     url = "about"

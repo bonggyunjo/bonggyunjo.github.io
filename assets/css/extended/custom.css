@@ -56,3 +56,76 @@ body {
     color: #2d3748;
     border-color: #cbd5e0;
 }
+
+/* About 페이지 전용 고도화 스타일 */
+
+/* 1. 타이틀 및 레이아웃 최적화 */
+.post-title {
+    font-size: 2.5rem;
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    margin-bottom: 2rem;
+    color: #1a202c;
+}
+
+/* 2. 본문 텍스트 가독성 (Pretendard 기반 고도화) */
+.post-content {
+    font-size: 1.125rem; /* 가독성 최적화 크기 */
+    line-height: 1.8;    /* 피로도를 줄이는 줄 간격 */
+    color: #2d3748;
+}
+
+/* 3. 구분선 디자인 고도화 */
+.post-content hr {
+    margin: 3rem 0;
+    border: 0;
+    border-top: 1px solid #edf2f7;
+}
+
+/* 4. 강조 문구(Blockquote) 스타일 - 철학 섹션에 사용 */
+.post-content blockquote {
+    border-left: 5px solid #2d3748;
+    background-color: #f8fafc;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    border-radius: 0 12px 12px 0;
+    font-style: italic;
+    color: #4a5568;
+}
+
+/* 5. 헤드라인(H2, H3) 시각화 강화 */
+.post-content h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-top: 3.5rem;
+    margin-bottom: 1.5rem;
+    color: #1a202c;
+    border-bottom: 2px solid #2d3748;
+    display: inline-block;
+    padding-bottom: 5px;
+}
+
+.post-content h3 {
+    font-size: 1.35rem;
+    font-weight: 700;
+    margin-top: 2rem;
+    color: #2d3748;
+}
+
+/* 6. 리스트 아이템 간격 최적화 */
+.post-content ul li {
+    margin-bottom: 0.8rem;
+}
+
+/* 7. 링크 스타일링 - 소셜 링크 */
+.post-content a {
+    color: #3182ce;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: all 0.2s;
+}
+
+.post-content a:hover {
+    border-bottom: 1px solid #3182ce;
+    background-color: #ebf8ff;
+}
