@@ -1,0 +1,24 @@
+/* Pretendard 폰트 적용 */
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
+
+:root {
+    --main-font: "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+    font-family: var(--main-font);
+}
+
+/* 소개글(subtitle) 가독성 및 디자인 강화 */
+.profile_inner .profile_description {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: #4a4a4a;
+    word-break: keep-all;
+    margin-top: 15px;
+}
+
+.profile_inner h1 {
+    font-weight: 800;
+    margin-bottom: 10px;
+}
