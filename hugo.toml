@@ -27,7 +27,7 @@ theme = 'PaperMod'
         수많은 기술적 난제와 시행착오를 집요하게 파고들어 해결한 트러블슈팅 리포트를 기록하는 공간입니다. 
         오늘 마주한 에러가 내일의 자산이 되길 바라며, 정답보다는 과정을 기록하는 데 집중하고 있습니다.
         """
-        imageUrl = "img/profile.jpg"
+        imageUrl = "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
         imageWidth = 140
         imageHeight = 140
         
