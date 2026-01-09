@@ -53,7 +53,7 @@ theme = 'PaperMod'
     weight = 5
 [[menu.main]]
     name = "Troubleshooting"
-    url = "posts"
+    url = "/posts/"
     weight = 10
 [[menu.main]]
     name = "Tags"
