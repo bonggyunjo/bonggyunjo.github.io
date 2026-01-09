@@ -1,0 +1,8 @@
+baseURL = 'https://bonggyunjo.github.io/'
+languageCode = 'ko-kr'
+title = 'JBG Tech Archive'
+theme = 'PaperMod'
+
+[params]
+    defaultTheme = "auto"
+    showCodeCopyButtons = true
