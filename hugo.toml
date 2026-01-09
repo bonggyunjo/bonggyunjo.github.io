@@ -1,6 +1,6 @@
 baseURL = 'https://bonggyunjo.github.io/'
 languageCode = 'ko-kr'
-title = 'JBG Tech Archive'
+title = '조봉균의 개발 일지: 문제 해결의 기록' # 더 대중적인 타이틀
 theme = 'PaperMod'
 
 [outputs]
@@ -8,36 +8,35 @@ theme = 'PaperMod'
 
 [params]
     env = "production"
-    title = "JBG Tech Archive"
-    description = "끊임없이 성장하는 풀스택 개발자 조봉균입니다."
+    title = "조봉균의 개발 일지"
+    description = "안 되는 이유를 찾고, 해결하며 성장하는 과정을 담는 기술 블로그입니다."
     author = "Bonggyun Jo"
     
-    # [디자인 고도화] 라이트 모드 기본 설정
-    defaultTheme = "light"           # 기본 배경을 흰색(라이트)으로 설정
-    disableThemeToggle = false      # 다크/라이트 모드 전환 버튼은 유지
+    # [디자인] 라이트 모드 기반의 깔끔한 가독성
+    defaultTheme = "light"
+    disableThemeToggle = false
     ShowReadingTime = true
     ShowCodeCopyButtons = true
     ShowBreadCrumbs = true
 
-    # [Profile Mode] 메인 화면: 나를 한 문장으로 정의하기
+    # [Profile Mode] 범용적인 문제 해결 능력을 강조하는 문구
     [params.profileMode]
         enabled = true
-        title = "Build, Learn, and Record. 👋"
+        title = "Build, Solve, and Record. 🛠️"
         subtitle = """
-        안녕하세요, **풀스택 개발자 조봉균**입니다.  
-        실무에서 마주한 기술적 난제와 해결 과정을 기록하며 동료들과 함께 성장하는 것을 즐깁니다.  
-        현재 에너지 모니터링 시스템 최적화 및 백엔드 고도화에 집중하고 있습니다.
+        "왜 안 되지?"에 대한 답을 찾아가는 과정을 기록합니다. 수많은 기술적 난제와 시행착오를 집요하게 파고들어 해결한 트러블슈팅 리포트를 기록하는 공간입니다. 
+        오늘 마주한 에러가 내일의 자산이 되길 바라며, 정답보다는 과정을 기록하는 데 집중하고 있습니다.
         """
         imageUrl = "img/profile.jpg"
         imageWidth = 140
         imageHeight = 140
         
         [[params.profileMode.buttons]]
-            name = "👨‍💻 About Me"       # 자기소개 페이지로 연결
-            url = "about"
-        [[params.profileMode.buttons]]
-            name = "📝 Tech Posts"
+            name = "🔍 해결 기록 보기"
             url = "posts"
+        [[params.profileMode.buttons]]
+            name = "👨‍💻 About Me"
+            url = "about"
 
     # [Social Icons]
     [[params.socialIcons]]
@@ -50,18 +49,18 @@ theme = 'PaperMod'
         name = "email"
         url = "mailto:kjbg4565388@gmail.com"
 
-# [Menu] 상단 메뉴에 'About' 추가
+# [Menu]
 [[menu.main]]
     name = "About"
     url = "about"
     weight = 5
 [[menu.main]]
-    name = "Backend"
-    url = "categories/backend"
+    name = "Troubleshooting"
+    url = "posts"
     weight = 10
 [[menu.main]]
-    name = "Frontend"
-    url = "categories/frontend"
+    name = "Tags"
+    url = "tags"
     weight = 20
 [[menu.main]]
     name = "Search"
