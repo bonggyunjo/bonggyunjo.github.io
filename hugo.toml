@@ -1,22 +1,31 @@
+# 1. 사이트 기본 설정 (맨 위에 위치해야 함)
+baseURL = 'https://bonggyunjo.github.io/'
+languageCode = 'ko-kr'
+title = 'JBG Tech Archive'
+theme = 'PaperMod'
+
+# 2. 메인 화면 정보 설정
 [params.homeInfoParams]
     Title = "Hi there, I'm JBG 👋"
     Content = "끊임없이 성장하는 풀스택 개발자의 기술 아카이브입니다."
 
+# 3. 소셜 아이콘 설정
 [[params.socialIcons]]
     name = "github"
     url = "https://github.com/bonggyunjo"
 [[params.socialIcons]]
-    name = "velog" # velog 아이콘이 지원 안 될 경우 "blog" 추천
+    name = "velog"
     url = "https://velog.io/@jbong"
 [[params.socialIcons]]
     name = "email"
     url = "mailto:kjbg4565388@gmail.com"
 
+# 4. 프로필 모드 설정 (메인 화면 중앙 카드)
 [params.profileMode]
-    enabled = true # 프로필 모드 활성화
+    enabled = true
     title = "JBG Tech Archive"
     subtitle = "시행착오를 통해 얻은 기술적 인사이트를 기록합니다."
-    imageUrl = "img/profile.jpg" # 프로필 이미지 경로
+    # imageUrl = "img/profile.jpg" # 이미지 파일이 준비되면 주석(#)을 지우세요
     imageWidth = 150
     imageHeight = 150
     
@@ -26,3 +35,13 @@
     [[params.profileMode.buttons]]
         name = "Tags"
         url = "tags"
+
+# 5. 상단 메뉴 설정 (선택 사항)
+[[menu.main]]
+    name = "Posts"
+    url = "posts"
+    weight = 10
+[[menu.main]]
+    name = "Tags"
+    url = "tags"
+    weight = 20
