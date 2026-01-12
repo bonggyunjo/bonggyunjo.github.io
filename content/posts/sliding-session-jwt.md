@@ -1,6 +1,6 @@
 ---
 title: "고정 토큰 만료에 대해 슬라이딩 세션(Sliding Session) 도입기"
-date: 2026-01-12T18:30:00+09:00
+date: 2026-01-12T16:50:00+09:00
 draft: false
 summary: "작업 중 갑작스러운 로그아웃은 사용자에게 치명적인 경험을 선사합니다. HI-REMS 프로젝트에서 Fixed Timeout의 문제를 진단하고, 슬라이딩 세션과 Absolute Timeout을 결합해 UX와 보안을 동시에 잡은 리팩토링 과정을 상세히 기록합니다."
 categories: ["Project", "Backend"]
