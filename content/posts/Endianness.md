@@ -7,7 +7,7 @@ categories: ["Project", "Backend"]
 tags: ["Endianness", "Node.js", "BinaryData", "Bitwise", "HI-REMS", "IoT", "Troubleshooting"]
 ---
 
-## 1. 프롤로그: "데이터가 깨져 보여요"
+## 데이터가 깨져 보여요..
 
 **HI-REMS** 프로젝트를 개발하며 가장 당혹스러웠던 순간은 DB에 쌓인 정체불명의 16진수 데이터를 마주했을 때였습니다. 에너지 계측 장치(RTU)는 표준 프로토콜에 따라 데이터를 보내고 있었지만, 이를 단순히 합치거나 읽으려고 하면 전혀 다른 숫자가 출력되었습니다.
 
