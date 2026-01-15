@@ -1,6 +1,6 @@
 baseURL = 'https://bonggyunjo.github.io/'
 languageCode = 'ko-kr'
-title = 'JBG'
+title = 'bonggyun`s blog'
 theme = 'PaperMod'
 
 [outputs]
@@ -32,7 +32,7 @@ theme = 'PaperMod'
             name = "트러블 슈팅"
             url = "posts"
         [[params.profileMode.buttons]]
-            name = "👨‍💻 About Me"
+            name = "About Me"
             url = "about"
 
     # [Social Icons]
