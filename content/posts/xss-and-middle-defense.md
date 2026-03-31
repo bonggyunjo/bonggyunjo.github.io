@@ -1,6 +1,6 @@
 ---
 title: "XSS의 동작 원리와 Express 미들웨어를 활용한 완벽 방어기"
-date: 2026-04-01T10:00:00+09:00
+date: 2026-03-31T17:00:00+09:00
 draft: false
 summary: "사용자의 브라우저를 노리는 XSS(교차 사이트 스크립팅) 공격. 그 개념과 위험성을 알아보고, 실제 Node.js/Express 프로젝트에서 재귀적 미들웨어를 통해 어떻게 요청 데이터를 안전하게 필터링했는지 공유합니다."
 categories: ["Security", "Backend"]
