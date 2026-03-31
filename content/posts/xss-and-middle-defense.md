@@ -7,7 +7,7 @@ categories: ["Security", "Backend"]
 tags: ["XSS", "Security", "Express", "Middleware", "Troubleshooting"]
 ---
 
-## 1. 프론트엔드를 노리는 조용한 암살자, XSS
+## 1. XSS
 
 이전 글에서 다뤘던 SQL Injection이 '데이터베이스'를 노리는 공격이었다면, 이번에 다룰 **XSS(Cross-Site Scripting, 교차 사이트 스크립팅)** 는 **'사용자의 브라우저(클라이언트)'** 를 노리는 대표적인 웹 취약점입니다.
 
@@ -71,7 +71,7 @@ const helmet = require('helmet');
 app.use(helmet());
 ```
 
-## 3. 방어가 잘되었는지 테스트
+## 3. 테스트 및 검증
 
 ### 3.1. 나쁜 태그로 확인
 ![alt text](/images/image-9.png)
@@ -80,7 +80,7 @@ app.use(helmet());
 
 > `<` 는 `&lt;` 로, `>` 는 `&gt;` (HTML Entity)로 변환되었습니다. 이제 이 데이터가 프론트엔드로 다시 전달되어 화면에 그려지더라도, 브라우저는 이를 스크립트 코드가 아닌 단순한 "문자열(Text)"로만 렌더링하므로 완벽하게 안전합니다.
 
-### 3.2 . Helmet이 적용한 강력한 HTTP 보안 헤더
+### 3.2 . Helmet 적용으로 인한 HTTP 보안 헤더
 
 > 네트워크 탭을 확인해 보면 서버가 응답할 때 강력한 보안 헤더들을 함께 내려보내는 것을 볼 수 있습니다.
 각 헤더가 브라우저에서 어떻게 XSS와 취약점을 막아내는지 보자면,
@@ -97,13 +97,13 @@ app.use(helmet());
 - **strict-transport-security (HSTS)** : 무조건 HTTPS 통신만 강제하도록 설정되어 있습니다.
 
 
-<a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/X-Content-Type-Options">X-Content-Type-Options</a>
+> [X-Content-Type-Options (MDN 공식 문서)](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/X-Content-Type-Options)
 
-<a href="https://developer.mozilla.org/ko/docs/Web/HTTP/Reference/Headers/Strict-Transport-Security">HSTS</a>
+> [HSTS (MDN 공식 문서)](https://developer.mozilla.org/ko/docs/Web/HTTP/Reference/Headers/Strict-Transport-Security)
 
-<a href="https://developer.mozilla.org/ko/docs/Web/HTTP/Guides/CSP">CSP</a>
+> [CSP (MDN 공식 문서)](https://developer.mozilla.org/ko/docs/Web/HTTP/Guides/CSP)
 
-<a href="https://developer.mozilla.org/ko/docs/Web/HTTP/Reference/Headers/Set-Cookie">Set-Cookie</a>
+> [Set-Cookie (MDN 공식 문서)](https://developer.mozilla.org/ko/docs/Web/HTTP/Reference/Headers/Set-Cookie)
 
 ## 4. 마치며
 > XXS를 적용하는 과정에서 이론으로만 알고 있던 내용을 실제로 재귀적 필터링 미들웨어를 직접 구현하여 스크립트 공격을 방어해보면서, Express 프레임워크의 요청/응답 생명주기를 한층 더 알게 되었던 계기가 되었습니다.
