@@ -7,7 +7,8 @@
 :root {
     --main-font: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
     --mono-font: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    --main-width: 820px;
+    --nav-width: 1080px;
+    --main-width: 1080px;
 
     /* [라이트 모드: 정제된 잉크 & 페이퍼 톤] */
     --ink-primary: #111315;
