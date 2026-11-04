@@ -1,0 +1,97 @@
+<div class="profile home-dashboard">
+    {{- with site.Params.profileMode }}
+    <div class="profile_inner">
+        <header class="minimal-intro">
+            <p class="intro-statement">
+                마주한 문제의 원인을 찾고 해결한 과정, 학습하며 새롭게 알게 된 사실들을 기록합니다.
+            </p>
+            <nav class="intro-links" aria-label="외부 링크">
+                <a href="https://github.com/bonggyunjo" target="_blank" rel="noopener">GitHub ↗</a>
+                <span class="link-sep">·</span>
+                <a href="https://velog.io/@jbong" target="_blank" rel="noopener">Velog ↗</a>
+                <span class="link-sep">·</span>
+                <a href="mailto:kjbg4565388@gmail.com">Email</a>
+            </nav>
+        </header>
+
+        {{- $tsPages := where site.RegularPages "Section" "troubleshooting" -}}
+        {{- $csPages := where site.RegularPages "Section" "cs" -}}
+        {{- $bePages := where site.RegularPages "Section" "backend" -}}
+
+        <section class="pillar-section" aria-label="카테고리 탐색">
+            <div class="section-label-row">
+                <span class="section-mono-label">CATEGORIES</span>
+                <span class="section-divider"></span>
+            </div>
+            <div class="category-grid">
+                <a class="category-card" href="{{ "/troubleshooting/" | relURL }}">
+                    <div class="category-card-top">
+                        <span class="category-index">01 / TROUBLESHOOTING</span>
+                        <span class="category-arrow">↗</span>
+                    </div>
+                    <h2 class="category-card-title">문제 해결의 기록</h2>
+                    <p class="category-card-desc">마주한 오류를 임시방편으로 덮지 않고, 원인의 밑바닥까지 추적하여 해결해 낸 실전 엔지니어링 로그</p>
+                    <div class="category-card-footer">
+                        <span class="category-count">{{ len $tsPages }}편의 글</span>
+                    </div>
+                </a>
+
+                <a class="category-card" href="{{ "/cs/" | relURL }}">
+                    <div class="category-card-top">
+                        <span class="category-index">02 / COMPUTER SCIENCE</span>
+                        <span class="category-arrow">↗</span>
+                    </div>
+                    <h2 class="category-card-title">CS에 관하여</h2>
+                    <p class="category-card-desc">프레임워크와 추상화 너머, 컴퓨터 구조·운영체제·네트워크가 실제로 동작하는 근본 원리에 대하여</p>
+                    <div class="category-card-footer">
+                        <span class="category-count">{{ len $csPages }}편의 글</span>
+                    </div>
+                </a>
+
+                <a class="category-card" href="{{ "/backend/" | relURL }}">
+                    <div class="category-card-top">
+                        <span class="category-index">03 / BACKEND</span>
+                        <span class="category-arrow">↗</span>
+                    </div>
+                    <h2 class="category-card-title">백엔드의 깊이</h2>
+                    <p class="category-card-desc">견고한 서버 아키텍처, 데이터 정합성과 ORM, 인증·보안까지 지속 가능한 시스템을 지탱하는 기술</p>
+                    <div class="category-card-footer">
+                        <span class="category-count">{{ len $bePages }}편의 글</span>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        {{- $recent := first 6 (where site.RegularPages "Section" "in" (slice "troubleshooting" "cs" "backend")) -}}
+        {{- if gt (len $recent) 0 }}
+        <section class="recent-section" aria-label="최근 작성한 글">
+            <div class="section-label-row">
+                <span class="section-mono-label">RECENT WRITINGS</span>
+                <span class="section-divider"></span>
+                <a class="recent-more" href="{{ "/archives/" | relURL }}">전체 보기 ({{ len (where site.RegularPages "Section" "in" (slice "troubleshooting" "cs" "backend")) }})</a>
+            </div>
+            <div class="recent-list">
+                {{- range $recent }}
+                {{- $sec := .Section -}}
+                {{- $secLabel := "Article" -}}
+                {{- if eq $sec "troubleshooting" -}}
+                    {{- $secLabel = "Troubleshooting" -}}
+                {{- else if eq $sec "cs" -}}
+                    {{- $secLabel = "CS" -}}
+                {{- else if eq $sec "backend" -}}
+                    {{- $secLabel = "Backend" -}}
+                {{- end -}}
+                <a class="recent-item" href="{{ .RelPermalink }}">
+                    <div class="recent-item-main">
+                        <span class="recent-item-cat">{{ $secLabel }}</span>
+                        <span class="recent-item-title">{{ .Title }}</span>
+                    </div>
+                    <time class="recent-item-date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006.01.02" }}</time>
+                </a>
+                {{- end }}
+            </div>
+        </section>
+        {{- end }}
+    </div>
+    {{- end }}
+</div>

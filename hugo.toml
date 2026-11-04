@@ -1,39 +1,65 @@
 baseURL = 'https://bonggyunjo.github.io/'
 languageCode = 'ko-kr'
-title = 'bonggyun`s blog'
+title = "bonggyun's blog"
 theme = 'PaperMod'
 
 [outputs]
     home = ["HTML", "RSS", "JSON"]
 
+[markup]
+    [markup.goldmark]
+        [markup.goldmark.renderer]
+            unsafe = true
+
 [params]
     env = "production"
-    title = "조봉균의 개발 일지"
-    description = "에러를 해결하며 성장하는 과정을 담는 트러블슈팅 로그입니다."
+    title = "조봉균의 기술 아카이브"
+    description = "트러블슈팅, CS, 백엔드 엔지니어링 기록을 담는 기술 블로그입니다."
     author = "Bonggyun Jo"
+    mainSections = ["troubleshooting", "cs", "backend"]
+    ShowAllPagesInArchive = false
     
-    # [디자인] 라이트 모드 기반 및 가독성 설정
+    # [디자인] 라이트/다크 모드 및 가독성 설정
     defaultTheme = "light"
     disableThemeToggle = false
-    ShowReadingTime = false
+    ShowReadingTime = true
     ShowCodeCopyButtons = true
     ShowBreadCrumbs = true
+    ShowPostNavLinks = true
+    ShowToc = true
+    TocOpen = false
 
-    # [Profile Mode] 명확하고 간결해진 자기소개
+    # [검색 옵션]
+    [params.fuseOpts]
+        isCaseSensitive = false
+        shouldSort = true
+        location = 0
+        distance = 1000
+        threshold = 0.4
+        minMatchCharLength = 0
+        keys = ["title", "permalink", "summary", "content", "tags", "categories"]
+
+    # [Profile Mode] 메인 대시보드 및 자기소개
     [params.profileMode]
         enabled = true
         title = "Build, Solve, and Record."
-        subtitle = "시행착오 속에서 얻은 해결 과정을 기록합니다. 정답보다는 기술적 고민의 흔적을 담아 내일의 자산으로 만듭니다."
+        subtitle = "시행착오 속에서 얻은 트러블슈팅 해결 과정과 CS·백엔드 엔지니어링의 본질적 원리를 기록합니다."
         imageUrl = "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
-        imageWidth = 120
-        imageHeight = 120
+        imageWidth = 100
+        imageHeight = 100
         
         [[params.profileMode.buttons]]
             name = "트러블 슈팅"
-            url = "posts"
+            url = "/troubleshooting/"
+        [[params.profileMode.buttons]]
+            name = "CS"
+            url = "/cs/"
+        [[params.profileMode.buttons]]
+            name = "백엔드"
+            url = "/backend/"
         [[params.profileMode.buttons]]
             name = "About Me"
-            url = "about"
+            url = "/about/"
 
     # [Social Icons]
     [[params.socialIcons]]
@@ -48,22 +74,30 @@ theme = 'PaperMod'
 
 # [Menu] 상단 내비게이션
 [[menu.main]]
-    name = "About"
-    url = "about"
-    weight = 5
-[[menu.main]]
     name = "Troubleshooting"
-    url = "/posts/"
+    url = "/troubleshooting/"
     weight = 10
 [[menu.main]]
-    name = "Tags"
-    url = "tags"
+    name = "CS"
+    url = "/cs/"
     weight = 20
 [[menu.main]]
-    name = "Search"
-    url = "search"
+    name = "Backend"
+    url = "/backend/"
     weight = 30
 [[menu.main]]
     name = "Archive"
-    url = "archives"
+    url = "/archives/"
     weight = 40
+[[menu.main]]
+    name = "Tags"
+    url = "/tags/"
+    weight = 50
+[[menu.main]]
+    name = "Search"
+    url = "/search/"
+    weight = 60
+[[menu.main]]
+    name = "About"
+    url = "/about/"
+    weight = 70

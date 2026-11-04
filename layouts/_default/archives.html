@@ -1,0 +1,83 @@
+{{- define "main" }}
+
+<header class="page-header">
+  <h1>{{ .Title }}</h1>
+  {{- if .Description }}
+  <div class="post-description">
+    {{ .Description }}
+  </div>
+  {{- end }}
+
+  {{- $tsCount := len (where site.RegularPages "Section" "troubleshooting") -}}
+  {{- $csCount := len (where site.RegularPages "Section" "cs") -}}
+  {{- $beCount := len (where site.RegularPages "Section" "backend") -}}
+  <nav class="section-tabs" aria-label="카테고리 전환">
+    <a class="section-tab active" href="{{ "/archives/" | relURL }}">
+      전체 아카이브 <span class="tab-count">{{ add (add $tsCount $csCount) $beCount }}</span>
+    </a>
+    <a class="section-tab" href="{{ "/troubleshooting/" | relURL }}">
+      문제 해결의 기록 <span class="tab-count">{{ $tsCount }}</span>
+    </a>
+    <a class="section-tab" href="{{ "/cs/" | relURL }}">
+      CS에 관하여 <span class="tab-count">{{ $csCount }}</span>
+    </a>
+    <a class="section-tab" href="{{ "/backend/" | relURL }}">
+      백엔드의 깊이 <span class="tab-count">{{ $beCount }}</span>
+    </a>
+  </nav>
+</header>
+
+{{- $pages := where site.RegularPages "Type" "in" site.Params.mainSections }}
+
+{{- if site.Params.ShowAllPagesInArchive }}
+{{- $pages = site.RegularPages }}
+{{- end }}
+
+{{- range $pages.GroupByPublishDate "2006" }}
+{{- if ne .Key "0001" }}
+<div class="archive-year">
+  {{- $year := replace .Key "0001" "" }}
+  <h2 class="archive-year-header" id="{{ $year }}">
+    <a class="archive-header-link" href="#{{ $year }}">{{- $year -}}</a>
+    <sup class="archive-count">&nbsp;{{ len .Pages }}</sup>
+  </h2>
+  {{- range .Pages.GroupByDate "01" }}
+  <div class="archive-month">
+    <h3 class="archive-month-header" id="{{ $year }}-{{ .Key }}">
+      <a class="archive-header-link" href="#{{ $year }}-{{ .Key }}">{{- .Key -}}월</a>
+      <sup class="archive-count">&nbsp;{{ len .Pages }}</sup>
+    </h3>
+    <div class="archive-posts">
+      {{- range .Pages }}
+      {{- if eq .Kind "page" }}
+      {{- $sec := .Section -}}
+      {{- $secLabel := "" -}}
+      {{- if eq $sec "troubleshooting" -}}
+          {{- $secLabel = "Troubleshooting" -}}
+      {{- else if eq $sec "cs" -}}
+          {{- $secLabel = "CS" -}}
+      {{- else if eq $sec "backend" -}}
+          {{- $secLabel = "Backend" -}}
+      {{- end -}}
+      <div class="archive-entry">
+        <h3 class="archive-entry-title entry-hint-parent">
+          {{- if $secLabel }}
+          <span class="archive-sec-tag">{{ $secLabel }}</span>
+          {{- end }}
+          {{- .Title | markdownify }}
+        </h3>
+        <div class="archive-meta">
+          {{- partial "post_meta.html" . -}}
+        </div>
+        <a class="entry-link" aria-label="post link to {{ .Title | plainify }}" href="{{ .Permalink }}"></a>
+      </div>
+      {{- end }}
+      {{- end }}
+    </div>
+  </div>
+  {{- end }}
+</div>
+{{- end }}
+{{- end }}
+
+{{- end }}

@@ -1,176 +1,526 @@
 /* ============================================================
-   1. 글로벌 폰트 및 테마별 색상 변수 설정
+   1. 타이포그래피 & 에디토리얼 모노크롬 컬러 시스템
    ============================================================ */
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap");
 
 :root {
-    --main-font: "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    
-    /* [라이트 모드 색상] */
-    --primary-color: #2d3748;    /* 주 텍스트 및 제목 */
-    --accent-color: #3182ce;     /* 링크 및 강조 */
-    --text-secondary: #4a5568;   /* 보조 설명 및 인용구 텍스트 */
-    --bg-light: #f8fafc;         /* 인용구 및 배경 강조 */
-    --border-color: #edf2f7;     /* 구분선 및 테두리 */
-    --button-bg: #ffffff;        /* 버튼 배경 */
+    --main-font: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    --mono-font: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    --main-width: 820px;
+
+    /* [라이트 모드: 정제된 잉크 & 페이퍼 톤] */
+    --ink-primary: #111315;
+    --ink-secondary: #4b5563;
+    --ink-muted: #8b95a1;
+    --surface-bg: #ffffff;
+    --surface-subtle: #f9fafb;
+    --hairline: #e5e7eb;
+    --hairline-strong: #111315;
+    --accent-color: #1d4ed8;
 }
 
-/* [다크 모드 색상 오버라이드] */
 [data-theme="dark"] {
-    --primary-color: #e2e8f0;    /* 밝은 회색 */
-    --accent-color: #63b3ed;     /* 밝은 파란색 */
-    --text-secondary: #a0aec0;   /* 가독성을 높인 보조 텍스트 */
-    --bg-light: #2e2e33;         /* 어두운 블록 배경 */
-    --border-color: #333333;     /* 어두운 테두리 */
-    --button-bg: #252627;        /* 어두운 버튼 배경 */
+    /* [다크 모드: 매트 차콜 & 오프화이트] */
+    --ink-primary: #f3f4f6;
+    --ink-secondary: #9ca3af;
+    --ink-muted: #6b7280;
+    --surface-bg: #141416;
+    --surface-subtle: #1c1c1f;
+    --hairline: #27272a;
+    --hairline-strong: #e4e4e7;
+    --accent-color: #60a5fa;
 }
 
-/* 기본 본문 크기 및 색상 최적화 */
 body {
     font-family: var(--main-font);
     font-size: 16px;
-    color: var(--primary-color);
+    color: var(--ink-primary);
+    letter-spacing: -0.015em;
+    -webkit-font-smoothing: antialiased;
 }
 
-/* ============================================================
-   2. 메인 프로필(Profile Mode) 디자인 고도화
-   ============================================================ */
-
-/* 프로필 타이틀 */
-.profile_inner h1 {
-    font-size: 2rem;
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    margin-bottom: 10px;
-    color: var(--primary-color);
+/* 상단 네비게이션 미세 조정 */
+.nav {
+    border-bottom: 1px solid var(--hairline);
 }
 
-/* 프로필 소개글(Subtitle) */
-.profile_inner .profile_description {
-    font-size: 0.95rem;
-    line-height: 1.6;
-    color: var(--text-secondary);
-    word-break: keep-all;
-    margin-top: 12px;
-    max-width: 550px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-/* 버튼 디자인 */
-.profile_inner .buttons .button {
-    background: var(--button-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 12px;
-    padding: 8px 20px;
+#menu a {
     font-size: 0.9rem;
-    font-weight: 600;
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-    color: var(--primary-color);
-}
-
-/* 첫 번째 버튼 (트러블 슈팅) */
-.profile_inner .buttons .button:first-child {
-    background: var(--primary-color);
-    color: var(--button-bg); /* 배경색과 대비되는 색상 */
-    border: none;
-}
-
-.profile_inner .buttons .button:first-child:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 12px -3px rgba(0, 0, 0, 0.12);
-    opacity: 0.9;
-}
-
-/* 두 번째 버튼 (About Me) */
-.profile_inner .buttons .button:nth-child(2):hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 12px -3px rgba(0, 0, 0, 0.08);
-    background: var(--bg-light);
-    border-color: var(--accent-color);
+    font-weight: 500;
 }
 
 /* ============================================================
-   3. 본문 페이지(About/Posts) 가독성 고도화
+   2. 홈 화면: 에디토리얼 히어로 & 아키텍처 그리드
    ============================================================ */
 
-/* 포스트 제목 */
+.main .profile.home-dashboard {
+    min-height: auto;
+    padding: 2.5rem 0 3.5rem;
+    align-items: stretch;
+    text-align: left;
+}
+
+.home-dashboard .profile_inner {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 3.25rem;
+    align-items: flex-start;
+}
+
+/* 상단 미니멀 소개 바 (군더더기 없는 한 줄 소개 + 외부 링크) */
+.minimal-intro {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-bottom: 0.25rem;
+}
+
+.intro-statement {
+    font-size: 1.02rem;
+    line-height: 1.65;
+    color: var(--ink-secondary);
+    word-break: keep-all;
+    margin: 0;
+}
+
+.intro-statement strong {
+    color: var(--ink-primary);
+    font-weight: 700;
+}
+
+.intro-links {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--mono-font);
+    font-size: 0.8rem;
+}
+
+.intro-links a {
+    color: var(--ink-secondary);
+    text-decoration: none;
+    transition: color 0.15s ease;
+}
+
+.intro-links a:hover {
+    color: var(--ink-primary);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.link-sep {
+    color: var(--ink-muted);
+}
+
+.empty-section-state {
+    padding: 3rem 0.5rem;
+    color: var(--ink-muted);
+    font-size: 0.92rem;
+    border-bottom: 1px solid var(--hairline);
+}
+
+/* 섹션 구분 라벨 (모노스페이스 + 헤어라인) */
+.pillar-section,
+.recent-section {
+    width: 100%;
+}
+
+.section-label-row {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    margin-bottom: 1.15rem;
+}
+
+.section-mono-label {
+    font-family: var(--mono-font);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--ink-muted);
+    white-space: nowrap;
+}
+
+.section-divider {
+    flex-grow: 1;
+    height: 1px;
+    background: var(--hairline);
+}
+
+/* 3대 주제 에디토리얼 그리드 */
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-top: 1px solid var(--ink-primary);
+    border-bottom: 1px solid var(--hairline);
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    .category-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.category-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1.5rem 1.35rem;
+    text-decoration: none;
+    background: transparent;
+    border-right: 1px solid var(--hairline);
+    transition: background-color 0.2s ease;
+}
+
+.category-card:last-child {
+    border-right: none;
+}
+
+@media (max-width: 768px) {
+    .category-card {
+        border-right: none;
+        border-bottom: 1px solid var(--hairline);
+        padding: 1.35rem 0.5rem;
+    }
+    .category-card:last-child {
+        border-bottom: none;
+    }
+}
+
+.category-card:hover {
+    background-color: var(--surface-subtle);
+}
+
+.category-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.category-index {
+    font-family: var(--mono-font);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--ink-muted);
+}
+
+.category-arrow {
+    font-family: var(--mono-font);
+    font-size: 0.9rem;
+    color: var(--ink-muted);
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.category-card:hover .category-arrow {
+    transform: translate(2px, -2px);
+    color: var(--ink-primary);
+}
+
+.category-card-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--ink-primary);
+    margin: 0 0 0.6rem;
+    letter-spacing: -0.025em;
+}
+
+.category-card-desc {
+    font-size: 0.88rem;
+    line-height: 1.65;
+    color: var(--ink-secondary);
+    word-break: keep-all;
+    margin: 0 0 1.4rem;
+    flex-grow: 1;
+}
+
+.category-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.category-count {
+    font-family: var(--mono-font);
+    font-size: 0.76rem;
+    color: var(--ink-muted);
+}
+
+/* 최근 글 인덱스 리스트 (미니멀 저널 스타일) */
+.recent-more {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--ink-secondary);
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.recent-more:hover {
+    color: var(--ink-primary);
+    text-decoration: underline;
+}
+
+.recent-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.recent-item {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1.25rem;
+    padding: 0.85rem 0.25rem;
+    border-bottom: 1px solid var(--hairline);
+    text-decoration: none;
+    transition: opacity 0.15s ease;
+}
+
+.recent-item:first-child {
+    border-top: 1px solid var(--hairline);
+}
+
+.recent-item:hover .recent-item-title {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+.recent-item-main {
+    display: flex;
+    align-items: baseline;
+    gap: 0.9rem;
+    min-width: 0;
+}
+
+.recent-item-cat {
+    font-family: var(--mono-font);
+    font-size: 0.74rem;
+    color: var(--ink-muted);
+    min-width: 112px;
+    flex-shrink: 0;
+}
+
+@media (max-width: 600px) {
+    .recent-item-cat {
+        min-width: auto;
+    }
+}
+
+.recent-item-title {
+    font-size: 0.96rem;
+    font-weight: 500;
+    color: var(--ink-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.recent-item-date {
+    font-family: var(--mono-font);
+    font-size: 0.78rem;
+    color: var(--ink-muted);
+    flex-shrink: 0;
+}
+
+/* ============================================================
+   3. 카테고리 리스트 페이지 & 언더라인 탭
+   ============================================================ */
+
+.page-header h1 {
+    font-size: 1.9rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+}
+
+.page-header .post-description {
+    color: var(--ink-secondary);
+    font-size: 0.96rem;
+    line-height: 1.65;
+    margin-top: 0.5rem;
+}
+
+.section-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-top: 1.75rem;
+    border-bottom: 1px solid var(--hairline);
+}
+
+.section-tab {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.35rem;
+    padding: 0 0 0.75rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--ink-muted);
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.section-tab:hover {
+    color: var(--ink-primary);
+}
+
+.section-tab.active {
+    color: var(--ink-primary);
+    font-weight: 700;
+    border-bottom-color: var(--ink-primary);
+}
+
+.tab-count {
+    font-family: var(--mono-font);
+    font-size: 0.74rem;
+    color: var(--ink-muted);
+}
+
+/* 포스트 목록 아이템: 플랫하고 정돈된 에디토리얼 스타일 */
+.post-entry {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--hairline);
+    border-radius: 0;
+    padding: 1.6rem 0.25rem;
+    margin-bottom: 0;
+    box-shadow: none;
+    transition: background-color 0.15s ease;
+}
+
+.post-entry:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+.post-entry:hover .entry-header h2 {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+.entry-top-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin-bottom: 0.45rem;
+    font-family: var(--mono-font);
+    font-size: 0.76rem;
+    color: var(--ink-muted);
+}
+
+.entry-sec-label {
+    color: var(--ink-secondary);
+    font-weight: 500;
+}
+
+.meta-dot {
+    color: var(--ink-muted);
+}
+
+.entry-header h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--ink-primary);
+}
+
+.entry-content p {
+    font-size: 0.93rem;
+    line-height: 1.65;
+    color: var(--ink-secondary);
+}
+
+.entry-tags-preview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.7rem;
+}
+
+.entry-tag-chip {
+    font-family: var(--mono-font);
+    font-size: 0.74rem;
+    color: var(--ink-muted);
+}
+
+.archive-sec-tag {
+    font-family: var(--mono-font);
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: var(--ink-muted);
+    margin-right: 0.55rem;
+}
+
+/* ============================================================
+   4. 본문 페이지(About/Posts) 가독성
+   ============================================================ */
+
 .post-title {
     font-size: 2rem;
-    font-weight: 900;
+    font-weight: 800;
     letter-spacing: -0.03em;
-    margin-bottom: 1.5rem;
-    color: var(--primary-color);
-    line-height: 1.3;
+    margin-bottom: 1.25rem;
+    color: var(--ink-primary);
+    line-height: 1.35;
 }
 
-/* 본문 텍스트 */
 .post-content {
     font-size: 1rem;
-    line-height: 1.75;
-    color: var(--primary-color);
+    line-height: 1.8;
+    color: var(--ink-primary);
 }
 
-/* 구분선 (HR) */
 .post-content hr {
     margin: 2.5rem 0;
     border: 0;
-    border-top: 1px solid var(--border-color);
+    border-top: 1px solid var(--hairline);
 }
 
-/* 인용구 (Blockquote) */
 .post-content blockquote {
     font-size: 0.95rem;
-    border-left: 4px solid var(--primary-color);
-    background-color: var(--bg-light);
-    padding: 1.2rem 1.5rem;
-    margin: 2rem 0;
-    border-radius: 0 10px 10px 0;
-    font-style: italic;
-    color: var(--text-secondary);
+    border-left: 3px solid var(--ink-primary);
+    background-color: var(--surface-subtle);
+    padding: 0.9rem 1.25rem;
+    margin: 1.75rem 0;
+    color: var(--ink-secondary);
 }
 
-/* 헤드라인 H2 */
 .post-content h2 {
-    font-size: 1.5rem;
+    font-size: 1.45rem;
     font-weight: 700;
-    margin-top: 3rem;
-    margin-bottom: 1.2rem;
-    color: var(--primary-color);
-    border-bottom: 2px solid var(--primary-color);
-    display: inline-block;
-    padding-bottom: 4px;
+    margin-top: 2.75rem;
+    margin-bottom: 1rem;
+    color: var(--ink-primary);
+    border-bottom: 1px solid var(--hairline);
+    padding-bottom: 0.45rem;
 }
 
-/* 헤드라인 H3 */
 .post-content h3 {
     font-size: 1.2rem;
     font-weight: 700;
     margin-top: 2rem;
-    color: var(--primary-color);
+    color: var(--ink-primary);
 }
 
-/* 리스트 간격 */
 .post-content ul li, .post-content ol li {
-    margin-bottom: 0.6rem;
+    margin-bottom: 0.5rem;
 }
 
-/* 텍스트 링크 */
 .post-content a {
     color: var(--accent-color);
-    text-decoration: none;
-    border-bottom: 1px solid transparent;
-    transition: all 0.2s ease;
+    text-decoration: underline;
+    text-underline-offset: 3px;
 }
 
-.post-content a:hover {
-    border-bottom: 1px solid var(--accent-color);
-    background-color: var(--bg-light);
-}
-
-/* 코드 블록 배경 (PaperMod 기본 테마와 조화) */
 .post-content .highlight {
-    border-radius: 12px;
+    border-radius: 8px;
     margin: 1.5rem 0;
 }

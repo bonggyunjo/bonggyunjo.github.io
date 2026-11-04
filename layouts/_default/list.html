@@ -1,0 +1,130 @@
+{{- define "main" }}
+
+{{- if (and site.Params.profileMode.enabled .IsHome) }}
+{{- partial "index_profile.html" . }}
+{{- else }}
+
+{{- if not .IsHome | and .Title }}
+<header class="page-header">
+  {{- partial "breadcrumbs.html" . }}
+  <h1>{{ .Title }}</h1>
+  {{- if .Description }}
+  <div class="post-description">
+    {{ .Description | markdownify }}
+  </div>
+  {{- end }}
+
+  {{- if eq .Kind "section" }}
+  {{- $tsCount := len (where site.RegularPages "Section" "troubleshooting") -}}
+  {{- $csCount := len (where site.RegularPages "Section" "cs") -}}
+  {{- $beCount := len (where site.RegularPages "Section" "backend") -}}
+  <nav class="section-tabs" aria-label="카테고리 전환">
+    <a class="section-tab {{ if eq .Section "troubleshooting" }}active{{ end }}" href="{{ "/troubleshooting/" | relURL }}">
+      문제 해결의 기록 <span class="tab-count">{{ $tsCount }}</span>
+    </a>
+    <a class="section-tab {{ if eq .Section "cs" }}active{{ end }}" href="{{ "/cs/" | relURL }}">
+      CS에 관하여 <span class="tab-count">{{ $csCount }}</span>
+    </a>
+    <a class="section-tab {{ if eq .Section "backend" }}active{{ end }}" href="{{ "/backend/" | relURL }}">
+      백엔드의 깊이 <span class="tab-count">{{ $beCount }}</span>
+    </a>
+    <a class="section-tab" href="{{ "/archives/" | relURL }}">
+      전체 아카이브
+    </a>
+  </nav>
+  {{- end }}
+</header>
+{{- end }}
+
+{{- if .Content }}
+<div class="post-content">
+  {{- if not (.Param "disableAnchoredHeadings") }}
+  {{- partial "anchored_headings.html" .Content -}}
+  {{- else }}{{ .Content }}{{ end }}
+</div>
+{{- end }}
+
+{{- $pages := union .RegularPages .Sections }}
+
+{{- if .IsHome }}
+{{- $pages = where site.RegularPages "Type" "in" site.Params.mainSections }}
+{{- $pages = where $pages "Params.hiddenInHomeList" "!=" "true"  }}
+{{- end }}
+
+{{- $paginator := .Paginate $pages }}
+
+{{- if eq (len $paginator.Pages) 0 }}
+<div class="empty-section-state">
+  <p>아직 등록된 글이 없습니다. 곧 새로운 주제로 첫 글이 기록될 예정입니다.</p>
+</div>
+{{- end }}
+
+{{- $term := .Data.Term }}
+{{- range $index, $page := $paginator.Pages }}
+
+{{- $class := "post-entry" }}
+{{- if $term }}
+{{- $class = "post-entry tag-entry" }}
+{{- end }}
+
+{{- $sec := .Section -}}
+{{- $secLabel := "" -}}
+{{- if eq $sec "troubleshooting" -}}
+    {{- $secLabel = "Troubleshooting" -}}
+{{- else if eq $sec "cs" -}}
+    {{- $secLabel = "CS" -}}
+{{- else if eq $sec "backend" -}}
+    {{- $secLabel = "Backend" -}}
+{{- end -}}
+
+<article class="{{ $class }}">
+  {{- $isHidden := (.Param "cover.hiddenInList") | default (.Param "cover.hidden") | default false }}
+  {{- partial "cover.html" (dict "cxt" . "IsSingle" false "isHidden" $isHidden) }}
+  <div class="entry-top-meta">
+    {{- if $secLabel }}
+    <span class="entry-sec-label">{{ $secLabel }}</span>
+    <span class="meta-dot">·</span>
+    {{- end }}
+    <time class="entry-date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006.01.02" }}</time>
+  </div>
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">
+      {{- .Title }}
+    </h2>
+  </header>
+  {{- if (ne (.Param "hideSummary") true) }}
+  <div class="entry-content">
+    <p>{{ .Summary | plainify | htmlUnescape }}{{ if .Truncated }}...{{ end }}</p>
+  </div>
+  {{- end }}
+  {{- if .Params.tags }}
+  <footer class="entry-footer entry-tags-preview">
+    {{- range first 5 .Params.tags }}
+    <span class="entry-tag-chip">#{{ . }}</span>
+    {{- end }}
+  </footer>
+  {{- end }}
+  <a class="entry-link" aria-label="post link to {{ .Title | plainify }}" href="{{ .Permalink }}"></a>
+</article>
+{{- end }}
+
+{{- if gt $paginator.TotalPages 1 }}
+<footer class="page-footer">
+  <nav class="pagination">
+    {{- if $paginator.HasPrev }}
+    <a class="prev" href="{{ $paginator.Prev.URL | absURL }}">
+      «&nbsp;{{ i18n "prev_page" }}
+    </a>
+    {{- end }}
+    {{- if $paginator.HasNext }}
+    <a class="next" href="{{ $paginator.Next.URL | absURL }}">
+      {{- i18n "next_page" }}&nbsp;»
+    </a>
+    {{- end }}
+  </nav>
+</footer>
+{{- end }}
+
+{{- end }}
+
+{{- end -}}
