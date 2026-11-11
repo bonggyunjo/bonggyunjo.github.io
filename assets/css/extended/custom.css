@@ -525,3 +525,23 @@ body {
     border-radius: 8px;
     margin: 1.5rem 0;
 }
+
+
+.post-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.94rem;
+}
+
+.post-content table th,
+.post-content table td {
+    padding: 0.7rem 0.9rem;
+    vertical-align: top;
+    word-break: keep-all;
+}
+
+.post-content table th:first-child,
+.post-content table td:first-child {
+    white-space: nowrap;
+}
