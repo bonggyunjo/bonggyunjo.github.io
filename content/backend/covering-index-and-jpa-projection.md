@@ -114,7 +114,7 @@ WHERE user_id = 12345;
 List<Payment> payments = paymentRepository.findByUserId(12345L);
 ```
 
-JPA로 엔티티 자체(`Payment`)를 조회하면 무조건 **`SELECT *`**로 쿼리가 나가기 때문에, DB에 복합 인덱스를 아무리 잘 만들어두어도 커버링 인덱스의 이점을 전혀 살리지 못한다.
+JPA로 엔티티 자체(`Payment`)를 조회하면 무조건 <strong>`SELECT *`</strong>로 쿼리가 나가기 때문에, DB에 복합 인덱스를 아무리 잘 만들어두어도 커버링 인덱스의 이점을 전혀 살리지 못한다.
 
 ### 2) 최적화: 프로젝션(Projection)을 통한 필요한 컬럼만 조회
 
