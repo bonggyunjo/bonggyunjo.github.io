@@ -103,6 +103,73 @@ item.setPrice(50000); // 별도 save() 호출 없이도 커밋 시 UPDATE 실행
 
 준영속 상태에서 변경이 누락되는 문제를 막으려면 엔티티가 <strong>영속 상태(Managed)</strong>일 때 수정이 일어나도록 흐름을 잡아야 한다.
 
-1. **트랜잭션 경계(`@Transactional`) 안에서 조회 및 수정**: 컨트롤러나 트랜잭션 바깥에서 엔티티를 수정하지 말고, `@Transactional`이 걸린 서비스 계층 내부에서 조회(`findById`)와 상태 변경을 함께 처리한다.
-2. **벌크 연산(`clearAutomatically = true`) 이후 엔티티 재조회**: 벌크 쿼리를 실행해 영속성 컨텍스트가 초기화되었다면, 기존에 들고 있던 엔티티 변수를 그대로 수정하지 말고 `repository.findById(...)`로 **다시 조회해 새로운 영속 상태 엔티티를 얻은 뒤** 필드를 변경한다.
-3. **`merge()` 대신 변경 감지(재조회) 사용**: 준영속 엔티티를 다시 영속화하는 `em.merge()`는 모든 필드를 덮어써 의도치 않은 `null` 업데이트 위험이 있으므로, 실무에서는 **다시 조회해서 영속 상태로 만든 뒤 필요한 필드만 변경 감지로 수정**하는 방식이 훨씬 안전하다.
+#### 1) 트랜잭션 경계(`@Transactional`) 안에서 조회 및 수정
+
+스프링 부트 환경에서는 기본적으로 트랜잭션의 생명주기와 영속성 컨텍스트의 생명주기가 일치한다.
+
+- **문제 발생 원인**: 트랜잭션이 없는 컨트롤러(Controller) 계층이나 `@Transactional`이 끝난 이후에 엔티티의 필드 값을 수정하면, 이미 영속성 컨텍스트가 종료되어 엔티티가 준영속 상태가 된다. 이때는 값을 아무리 바꿔도 DB에 반영되지 않는다.
+- **해결 원리 및 동작 흐름**: `@Transactional`이 붙은 서비스(Service) 메서드 내부에서 엔티티를 조회하고 값을 변경하면, 메서드가 시작될 때 열린 영속성 컨텍스트가 메서드가 끝날 때까지 유지된다. 이후 메서드 종료 시점에 트랜잭션 커밋과 플러시가 발생하며 최초 스냅샷과 비교해 변경 감지가 정상적으로 실행된다.
+
+```java
+// 올바른 흐름: 서비스 계층 내부에서 조회와 수정을 한 번에 처리
+@Service
+public class MemberService {
+
+    @Transactional
+    public void updateName(Long id, String newName) {
+        // 1. 트랜잭션 시작 -> 영속성 컨텍스트 생성 및 영속 상태 엔티티 조회
+        Member member = memberRepository.findById(id).orElseThrow();
+
+        // 2. 영속 상태에서 값 변경
+        member.changeName(newName);
+
+        // 3. 메서드 종료 시 커밋 -> 변경 감지 동작 (UPDATE 쿼리 실행)
+    }
+}
+```
+
+#### 2) 벌크 연산(`clearAutomatically = true`) 이후 엔티티 재조회
+
+JPQL이나 `@Modifying`을 사용한 벌크 연산(다건 일괄 수정/삭제)은 영속성 컨텍스트를 거치지 않고 DB에 직접 SQL을 실행한다.
+
+- **문제 발생 원인**: DB 데이터는 이미 바뀌었지만 영속성 컨텍스트에는 과거 데이터가 남아 데이터 불일치가 발생한다. 이를 막기 위해 `@Modifying(clearAutomatically = true)` 옵션을 주면 벌크 연산 직후 영속성 컨텍스트를 강제로 비우게(`em.clear()`) 되는데, 이때 기존에 자바 변수로 들고 있던 엔티티는 순간적으로 준영속 상태가 된다.
+- **해결 원리 및 동작 흐름**: 영속성 컨텍스트가 초기화된 이후에는 기존 변수를 재사용하지 말고 `findById()` 등으로 DB에서 최신 데이터를 다시 조회해야 한다. 재조회한 엔티티는 영속성 컨텍스트의 1차 캐시에 새로 등록되어 다시 변경 감지의 대상이 된다.
+
+```java
+@Transactional
+public void bulkAndSingleUpdate(Long memberId) {
+    Member member = memberRepository.findById(memberId).orElseThrow();
+
+    // 1. 벌크 연산 실행 -> clearAutomatically = true 옵션으로 영속성 컨텍스트 초기화
+    // 이 순간 위에서 조회한 'member' 변수는 준영속 상태가 됨
+    memberRepository.bulkAgePlus(20);
+
+    // [위험] 준영속 상태가 된 기존 변수를 수정하면 DB에 반영되지 않음
+    // member.changeName("변경실패");
+
+    // [해결] 영속성 컨텍스트가 비워졌으므로 DB에서 다시 조회하여 영속 엔티티 획득
+    Member refreshedMember = memberRepository.findById(memberId).orElseThrow();
+    refreshedMember.changeName("변경성공"); // 정상 반영
+}
+```
+
+#### 3) `merge()` 대신 변경 감지(재조회) 사용
+
+준영속 상태의 엔티티를 다시 영속 상태로 되돌리는 방법은 크게 `em.merge()` 호출과 재조회 후 변경 감지 두 가지가 있다.
+
+- **`merge()`의 위험성**: `em.merge(detachedEntity)`를 호출하면 JPA는 해당 엔티티의 식별자(PK)로 DB에서 데이터를 조회한 뒤, 파라미터로 넘어온 준영속 엔티티의 **모든 필드 값**을 기존 엔티티에 통째로 덮어씌운다. 만약 클라이언트에서 수정하지 않아 `null`로 넘어온 필드가 있다면, DB에 잘 저장되어 있던 기존 데이터까지 `null`로 덮어쓰는 데이터 유실 사고가 발생할 수 있다.
+- **재조회 후 변경 감지의 장점**: 트랜잭션 안에서 `findById()`로 DB의 원본 엔티티를 먼저 영속 상태로 불러온 뒤, 수정이 필요한 특정 필드만 비즈니스 메서드로 골라서 변경하면 원본 데이터가 보존된 상태에서 필요한 필드만 안전하게 업데이트된다.
+
+```java
+// 안전한 패턴: DTO로 필요한 값만 받아 영속 엔티티의 특정 필드만 선택적으로 수정
+@Transactional
+public void updateMemberSafe(Long memberId, MemberUpdateDto dto) {
+    // 1. DB에서 원본 엔티티 조회 (기존 데이터 모두 안전하게 유지됨)
+    Member member = memberRepository.findById(memberId).orElseThrow();
+
+    // 2. DTO에 담긴 변경할 필드만 선택적으로 수정 (다른 필드는 건드리지 않음)
+    if (dto.getName() != null) {
+        member.changeName(dto.getName());
+    }
+}
+```
