@@ -4,7 +4,7 @@
 </a><a class="section-tab active" href=/backend/>백엔드의 깊이 <span class=tab-count>11</span>
 </a><a class=section-tab href=/archives/>전체 아카이브</a></nav></header><article class=post-entry><div class=entry-top-meta><span class=entry-sec-label>Backend</span>
 <span class=meta-dot>·</span>
-<time class=entry-date datetime=2026-11-21>2026.11.21</time></div><header class=entry-header><h2 class=entry-hint-parent>MySQL 외래키(Foreign Key) 제약조건이 대규모 트래픽에서 유발하는 부모-자식 쓰기 락(Lock) 경합과 제거 전략</h2></header><div class=entry-content><p>MySQL InnoDB의 S-Lock과 X-Lock 동작 원리부터 외래키(FK) 제약조건이 대규모 트래픽에서 부모-자식 간 암묵적 락 경합 및 데드락을 유발하는 이유, 그리고 FK를 제거했을 때 발생하는 고아 데이터 부작용과 애플리케이션 보완 전략을 정리합니다.</p></div><footer class="entry-footer entry-tags-preview"><span class=entry-tag-chip>#Database</span>
+<time class=entry-date datetime=2026-11-21>2026.11.21</time></div><header class=entry-header><h2 class=entry-hint-parent>MySQL 외래키(Foreign Key) 제약조건이 대규모 트래픽에서 유발하는 부모-자식 쓰기 락(Lock) 경합과 제거 전략</h2></header><div class=entry-content><p>MySQL InnoDB의 행 단위 잠금인 S-Lock·X-Lock과 MVCC 스냅샷 동작 원리, 재고 1개 동시 결제 시나리오(쇼핑몰 vs 티켓팅 선점), 그리고 외래키(FK)가 유발하는 부모-자식 암묵적 락 경합과 FK 제거 시 애플리케이션 보완 전략을 정리합니다.</p></div><footer class="entry-footer entry-tags-preview"><span class=entry-tag-chip>#Database</span>
 <span class=entry-tag-chip>#MySQL</span>
 <span class=entry-tag-chip>#InnoDB</span>
 <span class=entry-tag-chip>#Foreign Key</span>
