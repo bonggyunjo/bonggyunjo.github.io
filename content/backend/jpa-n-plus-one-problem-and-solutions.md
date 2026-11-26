@@ -101,9 +101,24 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
 ### 3) `Batch Size` 설정 (`default_batch_fetch_size`)
 
-게시글과 댓글 같은 **1:N(컬렉션) 관계**에서는 `Fetch Join`을 쓰면 조인 결과로 행(Row) 수가 뻥튀기(카테시안 곱)되면서 메모리 페이징 경고가 뜨거나 페이징이 불가능해지는 한계가 있다.
+주문(`Order`)에서 회원(`Member`)을 바라보는 **N:1(다대일) / 1:1 관계**에서는 조인을 해도 부모 행의 개수가 늘어나지 않으므로 `Fetch Join`을 마음껏 써도 된다. 하지만 게시글(`Post`)과 댓글(`Comment`) 같은 **1:N(컬렉션) 관계**에서는 `Fetch Join`을 쓸 때 치명적인 한계가 생긴다.
 
-이럴 때 `application.yml`에 배치 페치 사이즈 옵션을 추가하면 깔끔하게 해결된다.
+#### 왜 1:N 컬렉션 관계에서는 `Fetch Join` + 페이징을 쓰면 안 될까?
+
+1. **데이터 뻥튀기(Row Multiplication)**:
+   게시글 1개에 댓글이 5개 달려 있다면, DB가 두 테이블을 조인하는 순간 **게시글 1개당 결과 행(Row)이 5줄로 불어난다.** 게시글 10개를 조회하면 DB 결과는 50줄이 된다.
+2. **DB 페이징(`LIMIT / OFFSET`) 기준이 틀어짐**:
+   우리가 원하는 건 *"게시글 10개(1페이지)와 그에 달린 댓글들"*인데, 조인된 50줄에 그대로 `LIMIT 10`을 걸면 1번 게시글 댓글 5줄 + 2번 게시글 댓글 5줄만 잘려서 **정작 게시글은 2개만 나오고, 심지어 댓글이 중간에 잘린 불완전한 데이터**가 만들어진다.
+3. **인메모리 페이징으로 인한 OOM(메모리 부족) 위험**:
+   이 문제를 피하기 위해 Hibernate는 1:N 컬렉션에 `Fetch Join`과 `Pageable`(페이징)을 함께 쓰면 다음 경고 로그를 띄우고 **`LIMIT` 없이 테이블 전체 데이터를 애플리케이션 메모리에 다 퍼 올린 뒤 JVM 위에서 강제 페이징**을 시도한다. 데이터가 조금만 많아져도 서버가 `OutOfMemoryError`로 죽을 수 있다.
+   ```text
+   WARN: HHH90003004: firstResult/maxResults specified with collection fetch; applying in memory
+   ```
+   *(여기에 더해 1:N 컬렉션 2개 이상을 동시에 `Fetch Join`하면 카테시안 곱으로 행이 기하급수적으로 늘어나 아예 `MultipleBagFetchException` 예외가 발생한다.)*
+
+#### 해결책: `default_batch_fetch_size` 적용
+
+이럴 때 `application.yml`에 배치 페치 사이즈 옵션을 추가하면 페이징과 N+1 문제를 동시에 해결할 수 있다.
 
 ```yaml
 spring:
@@ -113,15 +128,17 @@ spring:
         default_batch_fetch_size: 1000
 ```
 
-이 옵션을 켜두면 지연 로딩으로 연관 데이터를 조회할 때 1개씩 100번 물어보는 대신, **`IN (?, ?, ...)` 쿼리로 묶어 최대 1,000개씩 한 번에 몰아서 조회**한다.
+이 옵션을 켜두면 **1) 먼저 `Post`만 DB에서 `LIMIT 10`으로 정확하게 페이징 조회**한 뒤, **2) 이후 각 게시글의 댓글(`comments`)에 접근할 때 1개씩 10번 물어보는 대신 `IN (?, ?, ...)` 쿼리로 최대 1,000개씩 한 번에 몰아서 조회**한다.
 
 ```sql
--- 기존 1번 쿼리
-SELECT * FROM orders;
+-- 1. 메인 엔티티만 DB 레벨에서 정확하게 페이징 조회 (데이터 뻥튀기 없음)
+SELECT * FROM post LIMIT 10;
 
--- N번씩 날아가던 쿼리가 단 1번의 IN 쿼리로 압축
-SELECT * FROM member WHERE id IN (1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+-- 2. N번씩 날아가던 연관 댓글 조회가 단 1번의 IN 쿼리로 압축됨
+SELECT * FROM comment WHERE post_id IN (1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
 ```
+
+결과적으로 **`1 + 1` 총 2번의 쿼리**만으로 N+1 문제를 해결하면서도 DB 페이징의 정확성과 서버 메모리 안전성을 모두 지킬 수 있다.
 
 ---
 
